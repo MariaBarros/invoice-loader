@@ -1,4 +1,9 @@
 <div class="container">
+  <div class="row d-flex justify-content-center">
+    <div class="col-12 col-md-4">
+      <img class="image-responsive shadow-sm p-3 mb-5" src="../assets/header-image.png" />
+    </div>
+  </div>
   <form class="form-row" [formGroup]="formInvoice" (ngSubmit)="onSubmit()">
     
       <div class="col-12 col-md-10">
@@ -10,16 +15,16 @@
               <div class="col-sm-10 col-md-12">
                 <input class="form-control" formControlName="id" required placeholder="Invoice Number" 
                 (onChange)="checkNumber()" />
-              </div>
 
-              <div *ngIf="((formSubmitted === true && id.invalid) || (!id.pristine && id.invalid))" 
-                class="alert alert-danger">
+                 <div *ngIf="((formSubmitted === true && id.invalid) || (!id.pristine && id.invalid))" 
+                class="alert alert-danger position-absolute">
 
-                <div *ngIf="id.errors.required">Invoice number is required</div>
-                <div *ngIf="id.errors.pattern">Enter a valid invoice number</div>
-                <div *ngIf="id.errors.min">Invoice number must be grather than 0</div>
-                <div *ngIf="id.errors.value && id.errors.value.invalidId === true">The invoice number already exists</div>                    
-              </div>
+                  <div *ngIf="id.errors.required">This value is required</div>
+                  <div *ngIf="id.errors.pattern || id.errors.min">Enter a valid number</div>                  
+                  <div *ngIf="id.errors.value && id.errors.value.invalidId === true">Number already exists</div>                    
+                </div>
+
+              </div>             
           </div>
          
           </div>
@@ -29,13 +34,14 @@
               <label class="col-sm-2 col-md-12 col-form-label col-form-label-sm">Net</label>
               <div class="col-sm-10 col-md-12">
                 <input class="form-control" formControlName="net" placeholder="$" required />
-              </div>
-            
-              <div *ngIf="net.invalid && (net.dirty || net.touched)"  class="alert alert-danger">
+                <div *ngIf="((formSubmitted === true && net.invalid) || (!net.pristine && net.invalid))"  
+                class="alert alert-danger position-absolute">
 
-                <div *ngIf="net.errors.required || net.errors.pattern">Enter a valid value</div>            
+                  <div *ngIf="net.errors.required">This value is required</div>
+                  <div *ngIf="net.errors.pattern">Enter a valid number</div>            
 
-              </div>
+                </div>
+              </div>              
             </div>
           </div>
 

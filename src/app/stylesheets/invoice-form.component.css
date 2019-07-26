@@ -4,8 +4,15 @@
 
 .form-buttons-container{
 	height: 100%;
+	padding-top: 10px;
 }
 
 .form-buttons-container .flex-fill{
 	padding-bottom: 0 !important;
+}
+
+.alert{
+	top: 101%;
+	left: 15px;
+	z-index: 9;
 }
