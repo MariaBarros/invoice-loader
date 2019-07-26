@@ -16,10 +16,10 @@ export class InvoiceResumeComponent implements OnInit {
 	private totalTaxes: number;
 	private totalGlobal: number;
 
-  	constructor(private invoiceService: InvoiceService) { }
+  constructor(private invoiceService: InvoiceService) { }
 
   	ngOnInit() {  		
-  		this.getInvoices();
+  		this.getInvoices();      
   	}
 
   	getInvoices(){
@@ -34,8 +34,8 @@ export class InvoiceResumeComponent implements OnInit {
 
   		this.invoices.map((invoice) =>{
   			totalNet += invoice.net;
-  			totalTaxes += invoice.net * (invoice.tax/100);
-  			totalGlobal += invoice.net + (invoice.net * (invoice.tax/100));
+  			totalTaxes += invoice.net * (invoice.tax);
+  			totalGlobal += invoice.net + (invoice.net * (invoice.tax));
   		});
 
   		this.totalNet = totalNet;
@@ -45,6 +45,7 @@ export class InvoiceResumeComponent implements OnInit {
 
   	deleteAll(){
   		this.invoiceService.deleteAll();
+      this.invoiceService.toggleModal(false);
   		this.getInvoices();
   	}
 

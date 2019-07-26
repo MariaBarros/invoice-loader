@@ -13,6 +13,9 @@ const API_WEATHER_URL:string = "http://dataservice.accuweather.com/";
 
 const COLLECTION_STORED_NAME : string = "invoices";
 const ITEM_STORED_NAME : string = "invoice";
+const MODAL_DELETE = '#modalDelete';
+
+declare var $:any;
 
 @Injectable({
   providedIn: 'root'
@@ -42,8 +45,9 @@ export class InvoiceService {
     localStorage.removeItem(ITEM_STORED_NAME);
   }
 
-  saveInvoices():void{
+  saveInvoices():IInvoice[]{
   	this.storeData(this.invoices, COLLECTION_STORED_NAME);
+    return this.invoices;
   }
   	
   getDataForm(): IInvoice{  		
@@ -57,16 +61,17 @@ export class InvoiceService {
   }
 
   add(invoice): IInvoice[]{  	  	
-  	this.invoices.push(invoice);
     if(!invoice.total){
-      invoice.total = parseFloat(invoice.net) * (1 + parseFloat(invoice.tax)/100);  
+      invoice.total = invoice.net * (1 + parseFloat(invoice.tax));  
     }
+  	this.invoices.push(invoice);    
     this.deleteInvoiceStorage();
-  	return this.invoices;
+    return this.saveInvoices();
   }
 
   remove(id: number): IInvoice[]{
   	this.invoices = this.invoices.filter((invoice)=>invoice.id !=id);
+    this.saveInvoices();
   	return this.invoices;
   }
 
@@ -77,7 +82,7 @@ export class InvoiceService {
 
   private storeData(data, item){
   	const dataToStore = JSON.stringify(data);
-    localStorage.setItem(ITEM_STORED_NAME, dataToStore);
+    localStorage.setItem(item, dataToStore);
   }
 
   //Weather API
@@ -109,4 +114,12 @@ export class InvoiceService {
     	);
   	}
 
+   //Modal
+  toggleModal(show: boolean = true){
+    if(show === true){
+      $(MODAL_DELETE).addClass('show');
+    }else{
+      $(MODAL_DELETE).removeClass('show');  
+    }      
+  }
 }

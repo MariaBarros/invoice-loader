@@ -1,11 +1,3 @@
-#invoices-list{
-	margin-top: 20px;
-}
-
-.form-buttons-container{
-	height: 100%;
-}
-
-.form-buttons-container .flex-fill{
-	padding-bottom: 0 !important;
+#delete-all-container{
+	margin-top: 30px;
 }

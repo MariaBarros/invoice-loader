@@ -1,4 +1,4 @@
-#invoices-list, #forecast-container{
+#forecast-container{
 	margin-top: 30px;
 }
 
@@ -11,7 +11,7 @@
 	padding-bottom: 0 !important;
 }
 
-.alert{
+.alert.alert-danger{
 	top: 101%;
 	left: 15px;
 	font-size: 90%;
