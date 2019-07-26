@@ -38,6 +38,7 @@
                 class="alert alert-danger position-absolute">
 
                   <div *ngIf="net.errors.required">This value is required</div>
+                  <div *ngIf="net.errors.min">Enter a number grather than 0</div>
                   <div *ngIf="net.errors.pattern">Enter a valid number</div>            
 
                 </div>
@@ -103,7 +104,7 @@
             <td scope="row"> {{invoice.id}} </td>
             <td>{{invoice.net | currency}}</td>
             <td>{{invoice.tax}} %</td>
-            <td>{{invoice.total | number:'1.0-2':'en-ES' }}</td>
+            <td>{{invoice.total | currency }}</td>
             <td>
               <button class="btn btn-danger btn-sm" (click)="remove(invoice.id)">Remove</button>              
             </td>

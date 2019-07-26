@@ -11,7 +11,7 @@ import invoicesJson from '../data/invoices.json';
 const API_WEATHER_KEY:string = "iGNOrNeci7aiePQjzfCJAOD81wnvqVKN";
 const API_WEATHER_URL:string = "http://dataservice.accuweather.com/";
 
-const COLLECTION_STORED_NAME : string = "invoice";
+const COLLECTION_STORED_NAME : string = "invoices";
 const ITEM_STORED_NAME : string = "invoice";
 
 @Injectable({
@@ -38,6 +38,10 @@ export class InvoiceService {
   	this.storeData(data, ITEM_STORED_NAME);
   }
 
+  deleteInvoiceStorage(): void{    
+    localStorage.removeItem(ITEM_STORED_NAME);
+  }
+
   saveInvoices():void{
   	this.storeData(this.invoices, COLLECTION_STORED_NAME);
   }
@@ -52,17 +56,13 @@ export class InvoiceService {
   	return {id: null, net: 0, tax: 0, total: 0};
   }
 
-  add(invoice: IInvoice): IInvoice[]{  	
-  	invoice = this.calculateTotal(invoice);
+  add(invoice): IInvoice[]{  	  	
   	this.invoices.push(invoice);
+    if(!invoice.total){
+      invoice.total = parseFloat(invoice.net) * (1 + parseFloat(invoice.tax)/100);  
+    }
+    this.deleteInvoiceStorage();
   	return this.invoices;
-  }
-
-  calculateTotal(invoice):IInvoice{  	
-  	invoice.net = parseFloat(invoice.net);
-  	invoice.tax = parseFloat(invoice.tax);
-  	invoice.total = invoice.net + (invoice.net * invoice.tax/100);
-  	return invoice;
   }
 
   remove(id: number): IInvoice[]{

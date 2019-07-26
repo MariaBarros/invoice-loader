@@ -14,5 +14,7 @@
 .alert{
 	top: 101%;
 	left: 15px;
+	font-size: 90%;
+	padding: 5px;
 	z-index: 9;
 }
