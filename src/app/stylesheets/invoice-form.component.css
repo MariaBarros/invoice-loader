@@ -1,0 +1,11 @@
+#invoices-list, #forecast-container{
+	margin-top: 30px;
+}
+
+.form-buttons-container{
+	height: 100%;
+}
+
+.form-buttons-container .flex-fill{
+	padding-bottom: 0 !important;
+}

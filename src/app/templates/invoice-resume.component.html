@@ -1,0 +1,53 @@
+<div class="container">
+	<div class="row">
+    <div *ngIf="invoices && invoices.length > 0" id="invoices-list" class="col-12">
+      <h3>Your Invoices</h3>
+      <p>This is the list of your stored invoices.</p>
+
+      <table class="table table-reflow table-bordered table-hover table-sm">
+        <thead class="thead-light">
+          <tr>
+            <th class="col-6 col-md-3">Invoice Number</th>
+            <th class="col-6 col-md-2">Net</th>
+            <th class="col-6 col-md-2">% Tax</th>
+            <th class="col-md-2">Total</th>            
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let invoice of invoices">
+            <td scope="row"> {{invoice.id}} </td>
+            <td>{{invoice.net}}</td>
+            <td>{{invoice.tax}} %</td>
+            <td>{{invoice.total}}</td>            
+        </tr>       
+        </tbody>
+
+      </table>
+
+      <div class="col-12">
+        <div class="d-flex align-items-start">  
+          <div class="p-1 flex-fill">
+            Total Net: ${{totalNet}}
+          </div>
+          <div class="p-1 flex-fill">
+            Total Taxes: ${{totalTaxes}}
+          </div>
+          <div class="p-1 flex-fill">
+            Total Global: ${{totalGlobal}}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 text-right">
+        <button class="btn btn-outline-success" type="button" (onClick)="deleteAll()">Delete Work</button> 
+      </div>
+      
+    </div>
+
+    <div *ngIf="invoices && invoices.length === 0">
+      <h2>There are not invoices stored.</h2>      
+    </div>
+
+  </div>
+</div>

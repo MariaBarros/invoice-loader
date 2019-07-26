@@ -1,0 +1,139 @@
+<div class="container">
+  <form class="form-row" [formGroup]="formInvoice" (ngSubmit)="onSubmit()">
+    
+      <div class="col-12 col-md-10">
+        <div class="row">
+
+          <div class="col-12 col-sm-3">
+            <div class="form-group row">
+              <label class="col-sm-2 col-md-12 col-form-label col-form-label-sm">Invoice Number</label>
+              <div class="col-sm-10 col-md-12">
+                <input class="form-control" formControlName="id" required placeholder="Invoice Number" 
+                (onChange)="checkNumber()" />
+              </div>
+
+              <div *ngIf="((formSubmitted === true && id.invalid) || (!id.pristine && id.invalid))" 
+                class="alert alert-danger">
+
+                <div *ngIf="id.errors.required">Invoice number is required</div>
+                <div *ngIf="id.errors.pattern">Enter a valid invoice number</div>
+                <div *ngIf="id.errors.min">Invoice number must be grather than 0</div>
+                <div *ngIf="id.errors.value && id.errors.value.invalidId === true">The invoice number already exists</div>                    
+              </div>
+          </div>
+         
+          </div>
+
+          <div class="col-12 col-sm-3">
+            <div class="form-group row">
+              <label class="col-sm-2 col-md-12 col-form-label col-form-label-sm">Net</label>
+              <div class="col-sm-10 col-md-12">
+                <input class="form-control" formControlName="net" placeholder="$" required />
+              </div>
+            
+              <div *ngIf="net.invalid && (net.dirty || net.touched)"  class="alert alert-danger">
+
+                <div *ngIf="net.errors.required || net.errors.pattern">Enter a valid value</div>            
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-3">
+            <div class="form-group row">
+              <label class="col-sm-2 col-md-12 col-form-label col-form-label-sm" for="ship">% Tax</label> 
+              <div class="col-sm-10 col-md-12">
+                <select class="form-control" formControlName="tax" >
+                  <option *ngFor="let itemTax of taxes" [value]="itemTax">{{ itemTax }}%</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-3">
+            <div class="form-group row">
+              <label class="col-sm-2 col-md-12 col-form-label col-form-label-sm">Total</label>
+              <div class="col-sm-10 col-md-12">
+                <input class="form-control" formControlName="total" placeholder="$" />
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      
+      <div class="col-12 col-md-2">        
+        <div class="d-flex align-items-center form-buttons-container">  
+          <div class="p-1 flex-fill">
+            <button class="col btn btn-outline-success btn-block" type="submit">Add</button>            
+          </div>
+          <div class="p-1 flex-fill">
+            <button class="col btn btn-outline-danger btn-block" type="button" (click)="clear()">Clear</button>
+          </div>
+        </div>
+      </div>
+    
+  </form>
+    
+
+  <div class="row">
+    <div *ngIf="invoices && invoices.length > 0" id="invoices-list" class="col-12">
+      <h3>Your Invoices</h3>
+      <p>This is the list of your stored invoices.</p>
+
+      <table class="table table-reflow table-bordered table-hover table-sm">
+        <thead class="thead-light">
+          <tr>
+            <th class="col-6 col-md-3">Invoice Number</th>
+            <th class="col-6 col-md-2">Net</th>
+            <th class="col-6 col-md-2">% Tax</th>
+            <th class="col-md-2">Total</th>            
+            <th class="col"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let invoice of invoices">
+            <td scope="row"> {{invoice.id}} </td>
+            <td>{{invoice.net | currency}}</td>
+            <td>{{invoice.tax}} %</td>
+            <td>{{invoice.total | number:'1.0-2':'en-ES' }}</td>
+            <td>
+              <button class="btn btn-danger btn-sm" (click)="remove(invoice.id)">Remove</button>              
+            </td>
+        </tr>       
+        </tbody>
+
+      </table>
+      <div class="row">
+        <div class="col-12 text-right">
+          <a class="btn btn-primary" href="resume" (click)="process()">Process And Continue</a> 
+        </div>
+      </div>
+      
+    </div>
+
+    <div *ngIf="invoices && invoices.length === 0" class="col-12">
+      <div class="alert alert-info">There are not invoices stored.</div>
+    </div>
+
+    <div *ngIf="forecast" class="col-12 rounded bg-secondary text-white" id="forecast-container">
+      <div>
+        <h4>Forecast</h4>
+        <p>{{forecast.Headline.Text}}.</p>
+
+        <div class="d-flex">
+          <div *ngFor="let day of forecast.DailyForecasts" class="flex-fill">
+            <h5>{{day.Date | date:'EEEE, MMMM d'}}</h5>
+            <h6>{{day.Day.IconPhrase}}.</h6>
+            <h6 *ngIf="day.Day.HasPrecipitation === true">Precipitations</h6>
+            <h6>Min: {{day.Temperature.Minimum.Value}} °{{day.Temperature.Minimum.Unit}}</h6>
+            <h6>Max: {{day.Temperature.Maximum.Value}} °{{day.Temperature.Maximum.Unit}}</h6>          
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
