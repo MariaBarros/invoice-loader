@@ -8,6 +8,16 @@ img{
 	margin-top: 30px;
 }
 
+.table tr.row{
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.table-app-sm{
+	background-color: #e9ecef;
+	border-color: #dee2e6;
+}
+
 .modal.show{
 	opacity: 1;
 	display: block;

@@ -2,13 +2,39 @@
 	margin-top: 30px;
 }
 
+#forecast-container > .row{
+	margin: auto 0px;
+}
+
+#forecast-container div.row >h5{
+	margin-top:15px;
+	padding-bottom:15px;
+}
+
+#forecast-container div.forecast-item{
+	font-size: 80%;
+	padding-bottom: 40px;
+}
+
+#forecast-container div.forecast-item p{
+	margin-bottom: 5px;
+}
+
 .form-buttons-container{
 	height: 100%;
-	padding-top: 10px;
+	padding-top: 13px;
 }
 
 .form-buttons-container .flex-fill{
 	padding-bottom: 0 !important;
+}
+
+.form-buttons-container div.flex-fill:first-child {
+	margin-right: 2px;
+}
+
+.form-buttons-container div.flex-fill:last-child{
+	margin-left: 2px;
 }
 
 .alert.alert-danger{
