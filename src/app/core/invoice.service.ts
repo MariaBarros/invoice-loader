@@ -31,6 +31,7 @@ export class InvoiceService {
 
   getInvoices(): IInvoice[]{
   	const invoices:IInvoice[] = JSON.parse(localStorage.getItem(COLLECTION_STORED_NAME));  	
+    this.invoices = invoicesJson;
   	if(invoices){
   		this.invoices = invoices;
   	}

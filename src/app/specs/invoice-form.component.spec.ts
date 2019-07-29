@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { InvoiceFormComponent } from '../core/invoice-form.component';
@@ -8,13 +8,11 @@ import { CustomDecimalPipe } from '../core/custom-decimal.pipe';
 import { CustomNumberPipe } from '../core/custom-number.pipe';
 
 
-describe('InvoiceFormComponent', () => {
-  let component: InvoiceFormComponent;
-  let fixture: ComponentFixture<InvoiceFormComponent>;
+describe('InvoiceFormComponent', () => {  
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ 
+      declarations: [         
         InvoiceFormComponent,
         CustomDecimalPipe,
         CustomNumberPipe
@@ -28,26 +26,45 @@ describe('InvoiceFormComponent', () => {
     .compileComponents();
   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(InvoiceFormComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  function setup() {
+    const fixture = TestBed.createComponent(InvoiceFormComponent);
+    const component = fixture.componentInstance;
+    const invoiceService = fixture.debugElement.injector.get(InvoiceService);    
 
-  it('should show the form', () => {        
+    return { fixture, component, invoiceService };
+  }  
+
+  it('should create the invoice-form component', () => {        
+    const { component } = setup();
     expect(component).toBeTruthy();
   });
 
-  /*it(`should have taxes options`, () => {
-    const taxesValues = [0, 0.105, 0.21, 0.27];
-    const validTaxes = component.taxes && component.taxes === taxesValues;
-    expect(validTaxes).toBe(true);
+  it('should get invoices', () => {
+      const { fixture, invoiceService } = setup();                  
+      const currentInvoices = invoiceService.getInvoices();            
+      expect(currentInvoices).not.toBe(undefined);      
+  });  
+
+  it('should add invoice', () => {
+      const { invoiceService } = setup();
+
+      const currentInvoices = invoiceService.getInvoices();            
+      
+      const newInvoice = {id:100, net:1000, tax:0.21};
+      const updatedInvoices = invoiceService.add(newInvoice);
+      const invoiceAdded = updatedInvoices.filter((invoice) => invoice.id === 100); 
+      
+      expect(invoiceAdded.length>0).toBe(true);      
   });
 
-  it('should render the invoices list in #invoices-list', () => {    
-    const compiled = fixture.debugElement.nativeElement;
-    const invoicesList = compiled.querySelector('#invoices-list');    
-    expect(invoicesList).not.toBe(undefined);
-  });*/
+  it('should remove invoice', () => {
+      const { invoiceService } = setup();      
+            
+      invoiceService.remove(100);
+      const updatedInvoices = invoiceService.getInvoices();
+      const invoiceDeleted = updatedInvoices.filter((invoice) => invoice.id === 100);
+      
+      expect(invoiceDeleted.length === 0).toBe(true);
+  }); 
 
 });

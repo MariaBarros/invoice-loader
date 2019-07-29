@@ -6,9 +6,15 @@ import { InvoiceService } from '../core/invoice.service';
 import { CustomDecimalPipe } from '../core/custom-decimal.pipe';
 import { CustomNumberPipe } from '../core/custom-number.pipe';
 
-describe('InvoiceResumeComponent', () => {
-  let component: InvoiceResumeComponent;
-  let fixture: ComponentFixture<InvoiceResumeComponent>;
+describe('InvoiceResumeComponent', () => {  
+
+  function setup() {  
+    const invoiceService = TestBed.get(InvoiceService);
+    const fixture = TestBed.createComponent(InvoiceResumeComponent);
+    const component = fixture.componentInstance;  
+
+    return { component, invoiceService};
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -25,13 +31,16 @@ describe('InvoiceResumeComponent', () => {
     .compileComponents();
   }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(InvoiceResumeComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
+  
   it('should create', () => {
+    const { component } = setup();
     expect(component).toBeTruthy();
   });
+
+  it('should delete all work', ()=>{
+    const { invoiceService } = setup();
+    invoiceService.deleteAll();
+    const updateInvoices = invoiceService.getInvoices();
+    expect(updateInvoices.length === 0).toBe(true);
+  })
 });
