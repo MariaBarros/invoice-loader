@@ -9,12 +9,16 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { InvoiceResumeComponent } from './core/invoice-resume.component';
 import { InvoiceFormComponent } from './core/invoice-form.component';
+import { CustomDecimalPipe } from './core/custom-decimal.pipe';
+import { CustomNumberPipe } from './core/custom-number.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     InvoiceResumeComponent,
-    InvoiceFormComponent
+    InvoiceFormComponent,
+    CustomDecimalPipe,
+    CustomNumberPipe
   ],
   imports: [
     BrowserModule,

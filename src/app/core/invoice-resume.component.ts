@@ -15,6 +15,7 @@ export class InvoiceResumeComponent implements OnInit {
 	private totalNet: number;
 	private totalTaxes: number;
 	private totalGlobal: number;
+  private showModal:boolean = false;
 
   constructor(private invoiceService: InvoiceService) { }
 
@@ -45,7 +46,7 @@ export class InvoiceResumeComponent implements OnInit {
 
   	deleteAll(){
   		this.invoiceService.deleteAll();
-      this.invoiceService.toggleModal(false);
+      this.showModal = false;
   		this.getInvoices();
   	}
 

@@ -20,6 +20,7 @@ export class InvoiceFormComponent implements OnInit {
 
   //Invoice id selected
   private selectedId: number;
+  private showModal:boolean = false;
 
   //The invoice form
   private formInvoice: FormGroup;
@@ -35,7 +36,16 @@ export class InvoiceFormComponent implements OnInit {
 
   ngOnInit(){      
   	this.invoices = this.invoiceService.getInvoices();  		
-  	this.buildForm();
+
+    //Set the form fields and validators
+    this.formInvoice = this.formBuilder.group({
+      id: [{value:0,updateOn: 'blur'}, [Validators.required, Validators.pattern('[0-9]{1,}'), Validators.min(1)] ],
+      net: [{value:0}, [Validators.required, Validators.min(1)]],
+      tax: [null],
+      total: [{value: 0, disabled: true}]
+    });
+
+  	this.controlForm();
 
   	//if the navigator geolocation is available, get the current user position
   	if (navigator.geolocation) {
@@ -44,17 +54,9 @@ export class InvoiceFormComponent implements OnInit {
   }
 
   //Build invoice form
-  private buildForm(): void{		
+  private controlForm(): void{		
 	  this.formSubmitted = false;		
 		  
-    //Set the form fields and validators
-	  this.formInvoice = this.formBuilder.group({
-	  	id: [{value:0,updateOn: 'blur'}, [Validators.required, Validators.pattern('[0-9]{1,}'), Validators.min(1)] ],
-	   	net: [{value:0}, [Validators.required, Validators.min(1)]],
-	   	tax: [null],
-	   	total: [{value: 0, disabled: true}]
-	  });
-
 	  //set the form data
 	  const dataForm = this.invoiceService.getDataForm();
 	  this.formInvoice.patchValue(dataForm);
@@ -77,7 +79,7 @@ export class InvoiceFormComponent implements OnInit {
     });    
 
 	  //Set custom async validator for check the invoice number
-	  /*this.id.setAsyncValidators());*/
+	  this.id.setAsyncValidators(this.invoiceService.validateNumber());
 	}
 
   private updateTotal(){
@@ -116,12 +118,12 @@ export class InvoiceFormComponent implements OnInit {
 
   private selectForDelete(invoiceNumber: number){
     this.selectedId = invoiceNumber;
-    this.invoiceService.toggleModal(true);
+    this.showModal = true;
   }
 
 	private remove(invoiceNumber: number):void{    
   	this.invoices = this.invoiceService.remove(invoiceNumber);    
-    this.invoiceService.toggleModal(false);
+    this.showModal = false;
   }	
 
 	private getWeatherData(position: IPosition):void{

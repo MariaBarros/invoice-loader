@@ -1,9 +1,10 @@
 <div class="container">
   <div class="row d-flex justify-content-center">
-    <div class="col-12 col-md-4">
-      <img class="image-responsive shadow-sm p-3 mb-5" src="../assets/header-image.png" />
+    <div class="col-xs-12 col-md-8 col-lg-4">
+      <img class="img-fluid shadow-sm p-2 mb-5" src="../assets/header-image.png" />
     </div>
   </div>
+
   <form class="form-row" [formGroup]="formInvoice" (ngSubmit)="onSubmit()">
     
       <div class="col-12 col-md-10">
@@ -20,7 +21,7 @@
 
                   <div *ngIf="id.errors.required">This value is required</div>
                   <div *ngIf="id.errors.pattern || id.errors.min">Enter a valid number</div>                  
-                  <div *ngIf="id.errors.value && id.errors.value.invalidId === true">Number already exists</div>                    
+                  <div *ngIf="id.errors.numberInvalid">Number already exists</div>
                 </div>
 
               </div>             
@@ -99,10 +100,10 @@
 
         <tbody>
           <tr *ngFor="let invoice of invoices">
-            <td scope="row"> {{invoice.id }} </td> 
-            <td>{{invoice.net | currency}}</td>
+            <td scope="row"> {{invoice.id | customNumber:6}} </td> 
+            <td>{{invoice.net | currency | customDecimal}}</td>
             <td>{{invoice.tax | percent:'1.2'}}</td>
-            <td>{{invoice.total | currency }}</td>
+            <td>{{invoice.total | currency | customDecimal}}</td>
             <td>
               <button class="btn btn-danger btn-sm" (click)="selectForDelete(invoice.id)">Remove</button>              
             </td>
@@ -147,12 +148,12 @@
 
 
 
-<div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="modalDelLabel" aria-hidden="true">
+<div class="modal fade" [ngClass]="{'show': showModal === true}" tabindex="-1" role="dialog" aria-labelledby="modalDelLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Message</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="invoiceService.toggleModal(false)">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showModal=false">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -161,7 +162,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" 
-        (click)="invoiceService.toggleModal(false)">Cancel</button>
+        (click)="showModal=false">Cancel</button>
         <button type="button" class="btn btn-danger" (click)="remove(selectedId)">Delete</button>
       </div>
     </div>

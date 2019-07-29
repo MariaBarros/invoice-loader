@@ -1,5 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
+img{
+	width: 100%;
+}
+
 #invoices-list{
 	margin-top: 30px;
 }

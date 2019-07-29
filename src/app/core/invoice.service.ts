@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams} from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { ValidatorFn, FormControl, AsyncValidatorFn } from '@angular/forms';
 
 import { IInvoice, IPosition } from '../data/interfaces';
 
@@ -13,7 +14,6 @@ const API_WEATHER_URL:string = "http://dataservice.accuweather.com/";
 
 const COLLECTION_STORED_NAME : string = "invoices";
 const ITEM_STORED_NAME : string = "invoice";
-const MODAL_DELETE = '#modalDelete';
 
 declare var $:any;
 
@@ -112,14 +112,19 @@ export class InvoiceService {
               return [error];
       		})
     	);
-  	}
-
-   //Modal
-  toggleModal(show: boolean = true){
-    if(show === true){
-      $(MODAL_DELETE).addClass('show');
-    }else{
-      $(MODAL_DELETE).removeClass('show');  
-    }      
   }
+
+  //Simulate 
+  validateNumber():AsyncValidatorFn{
+   return (control: FormControl): Observable<{ [key: string]: any } | null> => {
+      
+      if(control.errors || !control.value){
+        return of(null);
+      }      
+      
+      const invoiceFilter = this.invoices.filter((invoice)=>  invoice.id === control.value );      
+      return (invoiceFilter.length > 0) ? of({numberInvalid: true}) : of(null);              
+    }; 
+  }
+  
 }
