@@ -28,13 +28,13 @@
         <tbody>
           <tr class="row" *ngFor="let invoice of invoices">
             <td class="d-md-none col-6 table-app-sm">Invoice Number</td>
-            <td class="col-6 col-md-3" scope="row"> {{invoice.id | customNumber:6}} </td> 
+            <td class="col-6 col-md-3 text-right" scope="row"> {{invoice.id | customNumber:6}} </td> 
             <td class="d-md-none col-6 table-app-sm">Net</td>
-            <td class="col-6 col-md-2">{{invoice.net | currency | customDecimal}}</td>
+            <td class="col-6 col-md-2 text-right">{{invoice.net | currency | customDecimal}}</td>
             <td class="d-md-none col-6 table-app-sm">%Tax</td>
-            <td class="col-6 col-md-2">{{invoice.tax | percent:'1.2'}}</td>
+            <td class="col-6 col-md-2 text-right">{{invoice.tax | percent:'1.2'}}</td>
             <td class="d-md-none col-6 table-app-sm">Total</td>
-            <td class="col-6 col-md-3">{{invoice.total | currency | customDecimal}}</td>
+            <td class="col-6 col-md-3 text-right">{{invoice.total | currency | customDecimal}}</td>
             <td class="col">
                           
             </td>
@@ -44,8 +44,8 @@
       </table>
             
       <div class="row">
-        <div class="col-12 col-md-4">            
-          <strong>Total Net</strong>: {{totalNet | currency| customDecimal}}
+        <div class="col-12 col-md-4">          
+          <strong>Total Net</strong>: {{totalNet | currency| customDecimal}}          
         </div>
         <div class="col-12 col-md-4">            
           <strong>Total Taxes</strong>: {{totalTaxes | currency | customDecimal}}
