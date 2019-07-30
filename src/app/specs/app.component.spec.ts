@@ -10,9 +10,7 @@ import { CustomDecimalPipe } from '../core/custom-decimal.pipe';
 import { CustomNumberPipe } from '../core/custom-number.pipe';
 
 describe('AppComponent', () => {  
-  let component: InvoiceFormComponent;
-  let fixture: ComponentFixture<AppComponent>;
-
+  
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ 
@@ -28,15 +26,16 @@ describe('AppComponent', () => {
     }).compileComponents();
   }));
 
-   beforeEach(() => {
-    fixture = TestBed.createComponent(AppComponent);    
-    component = fixture.componentInstance;    
-    fixture.detectChanges();
-  });
+  function setup() {
+    const fixture = TestBed.createComponent(AppComponent);
+    const component = fixture.componentInstance;     
+
+    return { fixture, component };
+  }
 
   it('should create the app', () => {    
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
+    const { component } = setup();
+    expect(component).toBeTruthy();
   });
 
 });
