@@ -1,4 +1,4 @@
-import { CustomDecimalPipe } from '../core/custom-decimal.pipe';
+import { CustomDecimalPipe } from './custom-decimal.pipe';
 
 describe('CustomDecimalPipe', () => {
 

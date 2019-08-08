@@ -1,0 +1,74 @@
+<ng-template #noContent>
+	<div class="row">
+		<div class="col-12">
+    		<div class="alert alert-info">There are not invoices stored.</div>
+    	</div>
+	</div>
+</ng-template>
+
+<div class="container">
+  <div class="row d-flex justify-content-center">
+    <div class="col-xs-12 col-md-8 col-lg-4">
+      <img class="img-fluid shadow-sm p-2 mb-5" src="../assets/header-image.png" />
+    </div>
+  </div>
+
+  <app-invoice-form onAdd="getInvoices()"></app-invoice-form>
+
+  <div class="row">
+
+		<div *ngIf="(invoices$ | async) as invoices; else noContent" id="invoices-list" class="col-12">
+	    
+		    <h3>Your Invoices</h3>
+		    <p>This is the list of your stored invoices.</p>
+
+		    <table class="table table-reflow table-bordered table-hover table-sm" *ngIf="invoices.length > 0; else noContent">
+		    	<thead class="thead-light d-none d-md-block">
+		          <tr class="row">
+		            <th class="col-md-3">Invoice Number</th>
+		            <th class="col-md-2">Net</th>
+		            <th class="col-md-2">% Tax</th>
+		            <th class="col-md-3">Total</th>            
+		            <th class="col"></th>
+		          </tr>
+		        </thead>
+
+		        <tbody>
+		          	<tr class="row" *ngFor="let invoice of invoices">
+
+			            <td class="d-md-none col-6 table-app-sm">Invoice Number</td>
+			            <td class="col-6 col-md-3 text-right" scope="row"> {{invoice.id | customNumber:6}} </td> 
+			            <td class="d-md-none col-6 table-app-sm">Net</td>
+			            <td class="col-6 col-md-2 text-right">{{invoice.net | currency | customDecimal}}</td>
+			            <td class="d-md-none col-6 table-app-sm">%Tax</td>
+			            <td class="col-6 col-md-2 text-right">{{invoice.tax | percent:'1.2'}}</td>
+			            <td class="d-md-none col-6 table-app-sm">Total</td>
+			            <td class="col-6 col-md-3 text-right">{{invoice.total | currency | customDecimal}}</td>
+			            <td class="col">
+			              <button class="btn btn-danger btn-sm btn-block" (click)="selectForDelete(invoice.id)">Remove</button>
+			            </td>
+
+		        	</tr>       
+		        </tbody>
+
+		    </table>
+
+		    <div class="row d-flex justify-content-end" *ngIf="invoices.length > 0">
+		        <div class="col-12 col-lg-3">
+		          <a class="btn btn-primary btn-block" href="resume">
+		            Process And Continue
+		          </a> 
+		        </div>
+		    </div>
+	      
+		</div>
+	</div>
+
+	<div class="row">
+		<app-weather></app-weather>
+	</div>
+</div>
+
+<app-dialog-delete (onConfirm)="remove()">
+  <p>Confirm delete the invoice number {{selectedId}}?</p>
+</app-dialog-delete>

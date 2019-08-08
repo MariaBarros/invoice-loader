@@ -4,13 +4,19 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule  } from '@angular/forms';
 import { HttpClientModule }    from '@angular/common/http';
 
-import { AppComponent } from './core/app.component';
+import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-import { InvoiceResumeComponent } from './core/invoice-resume.component';
-import { InvoiceFormComponent } from './core/invoice-form.component';
-import { CustomDecimalPipe } from './core/custom-decimal.pipe';
-import { CustomNumberPipe } from './core/custom-number.pipe';
+import { InvoiceResumeComponent } from './components/invoice-resume/invoice-resume.component';
+import { InvoiceFormComponent } from './components/invoice-form/invoice-form.component';
+
+import { WeatherComponent } from './components/weather/weather.component';
+import { DialogDeleteComponent } from './components/dialog-delete/dialog-delete.component';
+
+import { CustomDecimalPipe } from './pipes/custom-decimal.pipe';
+import { CustomNumberPipe } from './pipes/custom-number.pipe';
+import { InvoiceListComponent } from './components/invoice-list/invoice-list.component';
+
 
 @NgModule({
   declarations: [
@@ -18,7 +24,10 @@ import { CustomNumberPipe } from './core/custom-number.pipe';
     InvoiceResumeComponent,
     InvoiceFormComponent,
     CustomDecimalPipe,
-    CustomNumberPipe
+    CustomNumberPipe,
+    WeatherComponent,
+    DialogDeleteComponent,
+    InvoiceListComponent
   ],
   imports: [
     BrowserModule,

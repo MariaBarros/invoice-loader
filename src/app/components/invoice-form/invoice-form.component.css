@@ -1,25 +1,3 @@
-#forecast-container{
-	margin-top: 30px;
-}
-
-#forecast-container > .row{
-	margin: auto 0px;
-}
-
-#forecast-container div.row >h5{
-	margin-top:15px;
-	padding-bottom:15px;
-}
-
-#forecast-container div.forecast-item{
-	font-size: 80%;
-	padding-bottom: 40px;
-}
-
-#forecast-container div.forecast-item p{
-	margin-bottom: 5px;
-}
-
 .form-buttons-container{
 	height: 100%;
 	padding-top: 13px;

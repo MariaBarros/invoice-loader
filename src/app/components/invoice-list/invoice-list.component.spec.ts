@@ -1,40 +1,47 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { InvoiceFormComponent } from '../core/invoice-form.component';
-import { InvoiceService } from '../core/invoice.service';
-import { CustomDecimalPipe } from '../core/custom-decimal.pipe';
-import { CustomNumberPipe } from '../core/custom-number.pipe';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
+import { InvoiceListComponent } from './invoice-list.component';
+import { InvoiceFormComponent } from '../invoice-form/invoice-form.component';
+import { WeatherComponent } from '../weather/weather.component';
+import { DialogDeleteComponent } from '../dialog-delete/dialog-delete.component';
 
-describe('InvoiceFormComponent', () => {  
+import { CustomDecimalPipe } from '../../pipes/custom-decimal.pipe';
+import { CustomNumberPipe } from '../../pipes/custom-number.pipe';
+
+import { InvoiceService } from '../../services/invoice.service';
+
+describe('InvoiceListComponent', () => {  
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [         
-        InvoiceFormComponent,
-        CustomDecimalPipe,
-        CustomNumberPipe
-      ],
-      providers: [InvoiceService],
       imports:[
         ReactiveFormsModule,
         HttpClientTestingModule
-      ]
+      ],
+      declarations: [ 
+        InvoiceListComponent,
+        InvoiceFormComponent,
+        CustomDecimalPipe,
+        CustomNumberPipe,
+        WeatherComponent,
+        DialogDeleteComponent
+     ]
     })
     .compileComponents();
   }));
 
   function setup() {
-    const fixture = TestBed.createComponent(InvoiceFormComponent);
+    const fixture = TestBed.createComponent(InvoiceListComponent);
     const component = fixture.componentInstance;
     const invoiceService = fixture.debugElement.injector.get(InvoiceService);    
 
     return { fixture, component, invoiceService };
-  }  
+  }
 
-  it('should create the invoice-form component', () => {        
+  it('should create', () => {
     const { component } = setup();
     expect(component).toBeTruthy();
   });
@@ -43,7 +50,7 @@ describe('InvoiceFormComponent', () => {
       const { fixture, invoiceService } = setup();                  
       const currentInvoices = invoiceService.getInvoices();            
       expect(currentInvoices).not.toBe(undefined);      
-  });  
+  }); 
 
   it('should add invoice', () => {
       const { invoiceService } = setup();
@@ -61,10 +68,11 @@ describe('InvoiceFormComponent', () => {
       const { invoiceService } = setup();      
             
       invoiceService.remove(100);
-      const updatedInvoices = invoiceService.getInvoices();
-      const invoiceDeleted = updatedInvoices.filter((invoice) => invoice.id === 100);
-      
-      expect(invoiceDeleted.length === 0).toBe(true);
+      invoiceService.getInvoices().subscribe((invoices) => {
+        const invoiceDeleted = invoices.filter((invoice) => invoice.id === 100);  
+        expect(invoiceDeleted.length === 0).toBe(true);
+      });
+            
   }); 
-
+  
 });

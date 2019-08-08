@@ -2,9 +2,11 @@ import { NgModule } from '@angular/core';
 //import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
+
 //Components for paths
-import { InvoiceFormComponent }   from './core/invoice-form.component';
-import { InvoiceResumeComponent }   from './core/invoice-resume.component';
+import { InvoiceListComponent }   from './components/invoice-list/invoice-list.component';
+//import { InvoiceFormComponent }   from './components/invoice-form/invoice-form.component';
+import { InvoiceResumeComponent }   from './components/invoice-resume/invoice-resume.component';
 
 //Application Routes 
 const routes: Routes = [
@@ -14,7 +16,7 @@ const routes: Routes = [
   	pathMatch: 'full' },
   { 
   	path: 'loader', 
-  	component: InvoiceFormComponent  	
+  	component: InvoiceListComponent  	
   },
   { 
   	path: 'resume', 

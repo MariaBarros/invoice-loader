@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Observable, Observer } from 'rxjs';
 
-import { InvoiceService } from '../core/invoice.service';
+import { InvoiceService } from './invoice.service';
 
 describe('InvoiceService', () => {	  
 

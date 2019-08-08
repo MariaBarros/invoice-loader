@@ -3,11 +3,7 @@ import { RouterTestingModule } from "@angular/router/testing";
 
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { AppComponent } from '../core/app.component';
-import { InvoiceFormComponent } from '../core/invoice-form.component';
-
-import { CustomDecimalPipe } from '../core/custom-decimal.pipe';
-import { CustomNumberPipe } from '../core/custom-number.pipe';
+import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {  
   
@@ -18,10 +14,7 @@ describe('AppComponent', () => {
         ReactiveFormsModule
       ],
       declarations: [ 
-        AppComponent,
-        CustomDecimalPipe,
-        CustomNumberPipe,
-        InvoiceFormComponent 
+        AppComponent        
       ]
     }).compileComponents();
   }));

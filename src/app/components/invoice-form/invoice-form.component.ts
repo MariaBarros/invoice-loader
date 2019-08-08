@@ -1,56 +1,55 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl , Validators} from '@angular/forms';
 
-import { IPosition, IInvoice } from '../data/interfaces';
-import { InvoiceService } from '../core/invoice.service';
+import { IPosition, IInvoice } from '../../data/interfaces';
+import { InvoiceService } from '../../services/invoice.service';
 
 @Component({
   selector: 'app-invoice-form',
-  templateUrl: '../templates/invoice-form.component.html',
-  styleUrls: ['../stylesheets/invoice-form.component.css']
+  templateUrl: './invoice-form.component.html',
+  styleUrls: ['./invoice-form.component.css']
 })
 
 export class InvoiceFormComponent implements OnInit {
-  	
+  //Event emit when add a new invoice
+  @Output() onAdd: EventEmitter<any> = new EventEmitter<any>();
+
   //Taxes options
-  private taxes: number[] = [0, 0.105, 0.21, 0.27];
-
-  //Invoices collection stored
-  private invoices: IInvoice[];
-
-  //Invoice id selected
-  private selectedId: number;
-  private showModal:boolean = false;
+  private taxes: number[] = [0, 0.105, 0.21, 0.27];  
 
   //The invoice form
   private formInvoice: FormGroup;
 
   //Control the submit state
-  private formSubmitted: boolean;
-
-  //Forecast data
-  private forecast:any;
+  private formSubmitted: boolean;  
 
   constructor(private formBuilder: FormBuilder, 
   	private invoiceService: InvoiceService){ }
 
-  ngOnInit(){      
-  	this.invoices = this.invoiceService.getInvoices();  		
+  ngOnInit(){  	
 
     //Set the form fields and validators
     this.formInvoice = this.formBuilder.group({
-      id: [{value:0,updateOn: 'blur'}, [Validators.required, Validators.pattern('[0-9]{1,}'), Validators.min(1)] ],
-      net: [{value:0}, [Validators.required, Validators.min(1)]],
+      id: [
+        {value:0,updateOn: 'blur'}, 
+        [
+          Validators.required, 
+          Validators.pattern('[0-9]{1,}'), 
+          Validators.min(1)
+        ] 
+      ],
+      net: [
+        {value:0}, 
+        [
+          Validators.required, 
+          Validators.min(1)
+        ]
+      ],
       tax: [null],
       total: [{value: 0, disabled: true}]
     });
 
-  	this.controlForm();
-
-  	//if the navigator geolocation is available, get the current user position
-  	if (navigator.geolocation) {
- 		  this.getUserCurrentPosition();
- 	  }
+  	this.controlForm();  	
   }
 
   //Build invoice form
@@ -82,6 +81,7 @@ export class InvoiceFormComponent implements OnInit {
 	  this.id.setAsyncValidators(this.invoiceService.validateNumber());
 	}
 
+  //Show total
   private updateTotal(){
     if(this.net.valid === true && this.tax.valid === true){
       const total = this.net.value * (1 + parseFloat(this.tax.value));
@@ -91,50 +91,25 @@ export class InvoiceFormComponent implements OnInit {
 
 	private onSubmit(): void{
   	this.formSubmitted = true;
+
   	if(this.formInvoice.valid === true){
   	  //All form data is valid, add the invoice
-      this.invoices = this.invoiceService.add(this.formInvoice.value);
+      this.invoiceService.add(this.formInvoice.value);
+
+      //Emit event to the parent component an clear the form
+      this.onAdd.emit({refresh: true});
       this.clear();
   	}  		  	
   }  	
-  	
+  
+  //Clear the form
 	private clear(){
 		const dataForm = this.invoiceService.getDefaultValues();	  
-    this.formSubmitted = false;
-    this.formInvoice.reset(dataForm);    
+    this.formSubmitted = false;    
+    //Reset the form and clear the item stored in the local storage
+    this.formInvoice.reset(dataForm);
     this.invoiceService.deleteInvoiceStorage();
 	}
-
-  //Get user current position
-  private getUserCurrentPosition(): void{
-		const getCoords = (position) =>{			
-			const userPosition: IPosition = {lat: position.coords.latitude, lng: position.coords.longitude};
-			//Get the weather conditions for the next days
-			this.getWeatherData(userPosition);
-		}
-
-		navigator.geolocation.getCurrentPosition(getCoords, null, { timeout: 5000 });
-  }
-
-  private selectForDelete(invoiceNumber: number){
-    this.selectedId = invoiceNumber;
-    this.showModal = true;
-  }
-
-	private remove(invoiceNumber: number):void{    
-  	this.invoices = this.invoiceService.remove(invoiceNumber);    
-    this.showModal = false;
-  }	
-
-	private getWeatherData(position: IPosition):void{
-		this.invoiceService.getLocationKey(position).subscribe((response)=>{			
-		  	if(response && response.Key){		  		
-		  		this.invoiceService.getCurrentConditions(response.Key).subscribe((response)=>{   
-		  			this.forecast = response;		
-		  		});
-		  	}		  		
-		});
-	}	
 
   //getters for accessing to form fields
 	get id(): FormControl {

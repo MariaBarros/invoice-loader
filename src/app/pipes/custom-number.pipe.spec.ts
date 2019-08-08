@@ -1,4 +1,4 @@
-import { CustomNumberPipe } from '../core/custom-number.pipe';
+import { CustomNumberPipe } from './custom-number.pipe';
 
 describe('CustomNumberPipe', () => {
   function setup(){

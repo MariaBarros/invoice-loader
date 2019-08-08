@@ -1,3 +1,12 @@
+<ng-template #noContent>
+  <div class="col-12">
+    <h2>Invoices stored.</h2>
+    <div class="alert alert-info">
+      There are not invoices stored. <a href="/" class="alert-link">Go to the invoice loader</a>.
+    </div>
+  </div>
+</ng-template>
+
 <div class="container">
   <div class="row d-flex justify-content-center">
     <div class="col-xs-12 col-md-8 col-lg-4">
@@ -10,7 +19,7 @@
       <a href="/" class="text-primary">Back to the Loader</a>
     </div>
 
-    <div *ngIf="invoices && invoices.length > 0" id="invoices-list" class="col-12">
+    <div *ngIf="invoices && invoices.length > 0; else noContent" id="invoices-list" class="col-12">
       <h3>Your Invoices</h3>
       <p>This is the list of your stored invoices.</p>
       
@@ -57,39 +66,17 @@
       
       <div class="row">
         <div class="col-12 text-right" id="delete-all-container">
-          <button class="btn btn-danger" type="button" data-toggle="modal" (click)="showModal=true" >
+          <button class="btn btn-danger" type="button" data-toggle="modal" (click)="deleteWork()" >
             Delete Work
           </button>
         </div>
       </div>      
 
-    </div>
-
-    <div *ngIf="invoices && invoices.length === 0" class="col-12">
-      <h2>Invoices stored.</h2>
-      <div class="alert alert-info">There are not invoices stored. <a href="/" class="alert-link">Go to the invoice loader</a>.</div>
-    </div>
+    </div>   
 
   </div>
 </div>
 
-<div class="modal fade" [ngClass]="{'show': showModal === true}" tabindex="-1" role="dialog" aria-labelledby="modalDelLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Message</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="showModal=false">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Confirm delete all your work?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" 
-        (click)="showModal=false">Cancel</button>
-        <button type="button" class="btn btn-danger" (click)="deleteAll()">Delete</button>
-      </div>
-    </div>
-  </div>
-</div>
+<app-dialog-delete (onConfirm)="deleteAll()">
+  <p>Confirm delete all your work?</p>
+</app-dialog-delete>

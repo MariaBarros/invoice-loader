@@ -1,0 +1,37 @@
+ <ng-template #loading>
+  
+  <div class="row">
+    <div class="col-12">Getting weather data...</div>
+  </div>
+  
+</ng-template>
+
+ <div class="col-12" id="forecast-container">
+  <div *ngIf="forecast; else loading" class="row rounded bg-secondary text-white">
+    <h5 class="col-12">Forecast</h5>
+    <p class="col-12">{{forecast.Headline.Text}}.</p>
+
+    <div class="col-12">
+      <div class="row">
+        <div *ngFor="let day of forecast.DailyForecasts; first as isFirst" [ngClass]="{'d-none': isFirst}"
+          class="flex-fill col-12 col-sm-6 col-lg-3 forecast-item">
+  
+          <h6>{{day.Date | date:'EEEE, MMMM d'}}</h6>
+          <p>{{day.Day.IconPhrase}}. <span *ngIf="day.Day.HasPrecipitation === true">Precipitations.</span></p>
+              
+          <div class="d-flex justify-content-start">
+            <div class="flex-fill">
+              Min: {{day.Temperature.Minimum.Value}} °{{day.Temperature.Minimum.Unit}}
+            </div>
+            <div class="flex-fill">
+              Max: {{day.Temperature.Maximum.Value}} °{{day.Temperature.Maximum.Unit}}
+            </div>  
+          </div>
+              
+        </div>
+      </div>
+
+    </div>
+    
+  </div>
+</div>

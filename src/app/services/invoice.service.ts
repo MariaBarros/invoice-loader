@@ -29,13 +29,13 @@ export class InvoiceService {
   	this.invoices = invoicesJson;
   }
 
-  getInvoices(): IInvoice[]{
+  getInvoices(): Observable<IInvoice[]>{
   	const invoices:IInvoice[] = JSON.parse(localStorage.getItem(COLLECTION_STORED_NAME));  	
     this.invoices = invoicesJson;
   	if(invoices){
   		this.invoices = invoices;
   	}
-  	return this.invoices;
+  	return of(this.invoices);
   }
 
   storeInvoice(data): void{
@@ -70,10 +70,10 @@ export class InvoiceService {
     return this.saveInvoices();
   }
 
-  remove(id: number): IInvoice[]{
+  remove(id: number): Observable<IInvoice[]>{
   	this.invoices = this.invoices.filter((invoice)=>invoice.id !=id);
     this.saveInvoices();
-  	return this.invoices;
+  	return of(this.invoices);
   }
 
   deleteAll(): void{

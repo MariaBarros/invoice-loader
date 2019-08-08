@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { IPosition, IInvoice } from '../data/interfaces';
-import { InvoiceService } from '../core/invoice.service';
+import { DialogDeleteComponent } from '../../components/dialog-delete/dialog-delete.component';
+
+import { IPosition, IInvoice } from '../../data/interfaces';
+import { InvoiceService } from '../../services/invoice.service';
 
 @Component({
   selector: 'app-invoice-resume',
-  templateUrl: '../templates/invoice-resume.component.html',
-  styleUrls: ['../stylesheets/app.component.css']
+  templateUrl: './invoice-resume.component.html',
+  styleUrls: ['../../app.component.css']
 })
 
 export class InvoiceResumeComponent implements OnInit {
@@ -15,7 +17,9 @@ export class InvoiceResumeComponent implements OnInit {
 	private totalNet: number;
 	private totalTaxes: number;
 	private totalGlobal: number;
-  private showModal:boolean = false;
+
+  //Dialog for delete
+  @ViewChild(DialogDeleteComponent) dialogDelete: DialogDeleteComponent;
 
   constructor(private invoiceService: InvoiceService) { }
 
@@ -24,7 +28,9 @@ export class InvoiceResumeComponent implements OnInit {
   	}
 
   	getInvoices(){
-  		this.invoices = this.invoiceService.getInvoices();
+  		this.invoiceService.getInvoices().subscribe((invoices)=>{
+        this.invoices = invoices;
+      });
   		this.calculateTotals();
   	}
 
@@ -44,9 +50,12 @@ export class InvoiceResumeComponent implements OnInit {
   		this.totalGlobal = totalGlobal;
   	}
 
+    deleteWork(){
+      this.dialogDelete.showDialog();
+    }
+
   	deleteAll(){
-  		this.invoiceService.deleteAll();
-      this.showModal = false;
+  		this.invoiceService.deleteAll();      
   		this.getInvoices();
   	}
 

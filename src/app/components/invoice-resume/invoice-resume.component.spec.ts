@@ -1,10 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { InvoiceResumeComponent } from '../core/invoice-resume.component';
-import { InvoiceService } from '../core/invoice.service';
-import { CustomDecimalPipe } from '../core/custom-decimal.pipe';
-import { CustomNumberPipe } from '../core/custom-number.pipe';
+import { InvoiceResumeComponent } from './invoice-resume.component';
+import { DialogDeleteComponent } from '../dialog-delete/dialog-delete.component';
+
+import { InvoiceService } from '../../services/invoice.service';
+import { CustomDecimalPipe } from '../../pipes/custom-decimal.pipe';
+import { CustomNumberPipe } from '../../pipes/custom-number.pipe';
 
 describe('InvoiceResumeComponent', () => {  
 
@@ -20,6 +22,7 @@ describe('InvoiceResumeComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ 
         InvoiceResumeComponent,
+        DialogDeleteComponent,
         CustomDecimalPipe,
         CustomNumberPipe 
       ],
@@ -40,7 +43,10 @@ describe('InvoiceResumeComponent', () => {
   it('should delete all work', ()=>{
     const { invoiceService } = setup();
     invoiceService.deleteAll();
-    const updateInvoices = invoiceService.getInvoices();
-    expect(updateInvoices.length === 0).toBe(true);
+
+    invoiceService.getInvoices().subscribe((invoices) =>{
+      expect(invoices.length === 0).toBe(true);  
+    });
+    
   })
 });

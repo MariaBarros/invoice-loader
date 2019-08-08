@@ -1,0 +1,76 @@
+<form class="form-row" [formGroup]="formInvoice" (ngSubmit)="onSubmit()">
+    
+  <div class="col-12 col-lg-10">
+    <div class="row">
+
+      <div class="col-12 col-lg-3">            
+
+        <div class="form-group row">
+          <label class="col-5 col-lg-12 col-form-label col-form-label-sm">Invoice Number</label>
+          <div class="col-7 col-lg-12">
+            <input class="form-control" formControlName="id" required placeholder="Invoice Number" />
+
+            <div *ngIf="((formSubmitted === true && id.invalid) || (!id.pristine && id.invalid))" 
+                class="alert alert-danger position-absolute">
+
+              <div *ngIf="id.errors.required">This value is required</div>
+              <div *ngIf="id.errors.pattern || id.errors.min">Enter a valid number</div>                  
+              <div *ngIf="id.errors.numberInvalid">Number already exists</div>
+            </div>
+
+          </div>             
+        </div>
+         
+      </div>
+
+      <div class="col-12 col-lg-3">
+        <div class="form-group row">
+          <label class="col-5 col-lg-12 col-form-label col-form-label-sm">Net</label>
+          <div class="col-7 col-lg-12">
+            <input class="form-control" type="number" formControlName="net" placeholder="$" required />
+            <div *ngIf="((formSubmitted === true && net.invalid) || (!net.pristine && net.invalid))"  
+                class="alert alert-danger position-absolute">
+
+              <div *ngIf="net.errors.required">This value is required</div>
+              <div *ngIf="net.errors.min">Enter a number grather than 0</div>   
+
+            </div>
+          </div>              
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-3">
+        <div class="form-group row">
+          <label class="col-5 col-lg-12 col-form-label col-form-label-sm" for="ship">% Tax</label> 
+          <div class="col-7 col-lg-12">
+            <select class="form-control" formControlName="tax" >
+              <option *ngFor="let itemTax of taxes" [value]="itemTax">{{ itemTax | percent:'1.2' }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-3">
+        <div class="form-group row">
+          <label class="col-5 col-lg-12 col-form-label col-form-label-sm">Total</label>
+          <div class="col-7 col-lg-12">
+            <input class="form-control" formControlName="total" placeholder="$" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+      
+  <div class="col-12 col-lg-2">        
+    <div class="d-flex align-items-center justify-content-between form-buttons-container">  
+      <div class="flex-fill">
+        <button class="col-12 btn btn-outline-success btn-block" type="submit">Add</button>            
+      </div>
+      <div class="flex-fill">
+        <button class="col-12 btn btn-outline-danger btn-block" type="button" (click)="clear()">Clear</button>
+      </div>
+    </div>
+  </div>
+    
+</form>
